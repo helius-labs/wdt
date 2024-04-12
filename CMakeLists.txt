@@ -28,7 +28,7 @@ set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED on)
 
 # somehow 'option' for this doesn't seeem to work/I don't know how to make it
-set(BUILD_SHARED_LIBS on CACHE BOOL "build shared libs")
+set(BUILD_SHARED_LIBS off CACHE BOOL "build shared libs")
 
 # CMake default behavior should be to set rpath when needed (non system install)
 # it's not so let's set this for now:
@@ -77,12 +77,13 @@ if (NOT WDT_USE_SYSTEM_FOLLY)
   "${FOLLY_SOURCE_DIR}/folly/hash/detail/Crc32CombineDetail.cpp"
   "${FOLLY_SOURCE_DIR}/folly/ScopeGuard.cpp"
   "${FOLLY_SOURCE_DIR}/folly/detail/SplitStringSimd.cpp"
+  "${FOLLY_SOURCE_DIR}/folly/detail/TrapOnAvx512.cpp"
   "${FOLLY_SOURCE_DIR}/folly/external/fast-crc32/sse_crc32c_v8s3x3.cpp"
   )
 endif()
 
 # WDT's library proper - comes from: ls -1 *.cpp | grep -iv test
-add_library(wdt_min
+add_library(wdt_min STATIC
 util/WdtSocket.cpp
 util/ClientSocket.cpp
 util/EncryptionUtils.cpp
@@ -116,7 +117,7 @@ set (WDT_FLAGS_RELATED_SRC
 util/WdtFlags.cpp
 Wdt.cpp
 )
-add_library(wdt ${WDT_FLAGS_RELATED_SRC})
+add_library(wdt STATIC ${WDT_FLAGS_RELATED_SRC})
 
 set_property(TARGET wdt PROPERTY VERSION ${PROJECT_VERSION})
 set_property(TARGET wdt_min PROPERTY VERSION ${PROJECT_VERSION})
@@ -226,7 +227,7 @@ if (NOT WDT_USE_SYSTEM_FOLLY)
     message(STATUS "no weak symbols, adding MallocImpl to folly src")
   endif()
 
-  add_library(folly4wdt ${FOLLY_CPP_SRC})
+  add_library(folly4wdt STATIC ${FOLLY_CPP_SRC})
   target_link_libraries(folly4wdt ${GLOG_LIBRARY} ${DOUBLECONV_LIBRARY})
 endif()
 

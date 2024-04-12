@@ -758,9 +758,12 @@ string LogParser::getFormattedTimestamp(int64_t timestampMicros) {
   char buf[25];
   struct tm tm;
   localtime_r(&seconds, &tm);
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wformat-truncation"
   snprintf(buf, sizeof(buf), "%02d/%02d/%02d %02d:%02d:%02d.%06d",
            tm.tm_mon + 1, tm.tm_mday, (tm.tm_year % 100), tm.tm_hour, tm.tm_min,
            tm.tm_sec, microseconds);
+#pragma GCC diagnostic pop
   return buf;
 }
 
