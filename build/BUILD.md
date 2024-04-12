@@ -13,11 +13,8 @@ We don't have yet a native Windows port (please contribute!) but it does
 build and runs with Cygwin64 using the Linux instructions (and static linking)
 
 # Notes:
- On Ubuntu 14.04 - to get g++ 4.9
- ```
- sudo add-apt-repository ppa:ubuntu-toolchain-r/test
- sudo apt-get upgrade
- ```
+ On Ubuntu 20.04 the build requires GCC-10 rather than the default GCC9
+
 If using a vmware image/starting fresh
 ```
  sudo vmware-config-tools.pl  # to setup shared folders
@@ -45,7 +42,8 @@ if you can find a binary distrubution for your variant of linux:__
 
 ```
 sudo apt-get install libgoogle-glog-dev libboost-system-dev \
-libdouble-conversion-dev libjemalloc-dev
+libdouble-conversion-dev libjemalloc-dev libfmt-dev libssl-dev \
+gcc-10 g++-10
 ```
 
 __Otherwise, Build double-conversion, gflags and glog from source__
